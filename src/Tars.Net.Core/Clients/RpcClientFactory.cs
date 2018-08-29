@@ -12,20 +12,18 @@ using Tars.Net.Metadata;
 
 namespace Tars.Net.Clients
 {
-    public class RpcClientFactory<T> : IRpcClientFactory
+    public class RpcClientFactory : IRpcClientFactory
     {
         private readonly Task<object> completedTask = Task.FromResult<object>(null);
-        private readonly IEncoder<T> encoder;
-        private readonly IDecoder<T> decoder;
+        private readonly IContentDecoder decoder;
         private readonly RpcConfiguration configuration;
         private readonly Dictionary<RpcProtocol, IRpcClient> clients;
 
         private ConcurrentDictionary<int, TaskCompletionSource<Response>> callBacks = new ConcurrentDictionary<int, TaskCompletionSource<Response>>();
         private int requestId = 0;
 
-        public RpcClientFactory(IEnumerable<IRpcClient> rpcClients, IEncoder<T> encoder, IDecoder<T> decoder, RpcConfiguration configuration)
+        public RpcClientFactory(IEnumerable<IRpcClient> rpcClients, IContentDecoder decoder, RpcConfiguration configuration)
         {
-            this.encoder = encoder;
             this.decoder = decoder;
             this.configuration = configuration;
             clients = rpcClients.ToDictionary(i => i.Protocol);

@@ -6,9 +6,12 @@ namespace Tars.Net.Codecs
     {
         Request DecodeRequest(T input);
 
-        void DecodeRequestContent(Request req);
-
         Response DecodeResponse(T input);
+    }
+
+    public interface IContentDecoder
+    {
+        void DecodeRequestContent(Request req);
 
         void DecodeResponseContent(Response resp);
     }
